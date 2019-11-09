@@ -7,10 +7,20 @@ globalZoomSize = 2.0
 zoomin = false;
 zoomout = false;
 zoomvector = glMatrix.vec2.create();
-zoomscale = 0.05;
+zoomscale = 0.025;
 thresh = 0.0;
 globalZoomSize = 2.0;
 zoomconst = 0.5;
+
+zoomiterations = {
+  "0.1": 500,
+  "0.01": 1000,
+  "0.001": 5000,
+  "0.0001": 10000,
+  "0.00001": 15000,
+};
+
+
 
 main();
 
@@ -118,14 +128,38 @@ function main() {
               gl.uniform1f(programInfo.uniformLocations.zoomSize, globalZoomSize);
             }
             //console.log("mousedown");
+            console.log(globalZoomSize);
+            gl.uniform1i(programInfo.uniformLocations.maxIterations, 500);
 
         }
-        if(zoomout)
+        else if(zoomout)
         {
           globalZoomSize = globalZoomSize + globalZoomSize*0.01;
           gl.uniform1f(programInfo.uniformLocations.zoomSize, globalZoomSize);
-
-
+          gl.uniform1i(programInfo.uniformLocations.maxIterations, 500);
+        }
+        else
+        {
+          if(globalZoomSize > 0.1)
+          {
+            gl.uniform1i(programInfo.uniformLocations.maxIterations, 300);
+          }
+          else if(globalZoomSize > 0.01 && globalZoomSize <= 0.1)
+          {
+            gl.uniform1i(programInfo.uniformLocations.maxIterations, 500);
+          }
+          else if(globalZoomSize > 0.001 && globalZoomSize <= 0.01)
+          {
+            gl.uniform1i(programInfo.uniformLocations.maxIterations, 1000);
+          }
+          else if(globalZoomSize > 0.0001 && globalZoomSize <= 0.001)
+          {
+            gl.uniform1i(programInfo.uniformLocations.maxIterations, 5000);
+          }
+          else if(globalZoomSize <= 0.0001)
+          {
+            gl.uniform1i(programInfo.uniformLocations.maxIterations, 10000);
+          }
         }
 
     
