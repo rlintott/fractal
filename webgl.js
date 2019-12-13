@@ -11,15 +11,8 @@ zoomscale = 0.025;
 thresh = 0.0;
 globalZoomSize = 2.0;
 zoomconst = 0.5;
-
-zoomiterations = {
-  "0.1": 500,
-  "0.01": 1000,
-  "0.001": 5000,
-  "0.0001": 10000,
-  "0.00001": 15000,
-};
-
+x_val = 0.0;
+y_val = 0.0;
 
 
 main();
@@ -28,8 +21,16 @@ main();
 // Start here
 //
 function main() {
+
   const canvas = document.querySelector('#glcanvas');
   const gl = canvas.getContext('webgl');
+
+  x_val = document.getElementById("x-slider").value;
+  x_val /= 100;
+
+  y_val = document.getElementById("y-slider").value;
+  y_val /= 100;
+
 
 
 
@@ -47,7 +48,7 @@ function main() {
   // Vertex shader program
 
     //get fragment shader
-    var fsSource = document.querySelector("#shader-fs").innerHTML;
+    var fsSource = document.querySelector("#shader-fs-julia").innerHTML;
     var fragmentShader = gl.createShader(gl.FRAGMENT_SHADER);
     gl.compileShader(fragmentShader);
     //get vertex shader
@@ -71,7 +72,8 @@ function main() {
       resolution: gl.getUniformLocation(shaderProgram, 'u_resolution'),
       zoomSize: gl.getUniformLocation(shaderProgram, 'u_zoomSize'),
       zoomCenter: gl.getUniformLocation(shaderProgram, 'u_zoomCenter'),
-      maxIterations: gl.getUniformLocation(shaderProgram, 'u_maxIterations')
+      maxIterations: gl.getUniformLocation(shaderProgram, 'u_maxIterations'),
+      c: gl.getUniformLocation(shaderProgram, 'u_c')
     },
   };
   gl.useProgram(shaderProgram);
@@ -80,6 +82,7 @@ function main() {
     gl.uniform2fv(programInfo.uniformLocations.zoomCenter, [0.0, 0.0]);
     gl.uniform1fv(programInfo.uniformLocations.zoomSize, [2.0]);
     gl.uniform1iv(programInfo.uniformLocations.maxIterations, [75]);
+    gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val])
   // Here's where we call the routine that builds all the
   // objects we'll be drawing.
     const buffers = initBuffers(gl);
@@ -142,7 +145,7 @@ function main() {
         {
           if(globalZoomSize > 0.1)
           {
-            gl.uniform1i(programInfo.uniformLocations.maxIterations, 300);
+            gl.uniform1i(programInfo.uniformLocations.maxIterations, 500);
           }
           else if(globalZoomSize > 0.01 && globalZoomSize <= 0.1)
           {
@@ -162,7 +165,35 @@ function main() {
           }
         }
 
-    
+    //Enter C value.
+    document.getElementById("x-slider").oninput = function() {
+      x_val = document.getElementById("x-slider").value;
+      x_val /= 100;
+      document.getElementById("real").value = x_val;
+      gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
+      //console.log(x_val);
+    };
+    document.getElementById("y-slider").oninput = function() {
+      y_val = document.getElementById("y-slider").value;
+      y_val /= 100;
+      document.getElementById("imaginary").value = y_val;
+      gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
+      //console.log(y_val);
+    };
+    document.getElementById("real").oninput = function() {
+      x_val = document.getElementById("real").value;
+      gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
+      console.log("hellox");
+    };
+    document.getElementById("imaginary").oninput = function() {
+      y_val = document.getElementById("imaginary").value;
+      gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
+      console.log("helloy");
+    };
+
+
+
+
       drawScene(gl, programInfo, buffers);
     
       requestAnimationFrame(render);
