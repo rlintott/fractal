@@ -5,40 +5,73 @@
         <title>WebGL Demo</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="./webgl.css" type="text/css">
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async
+                src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+        </script>
     </head>
 
     <body>
         <div class="title">
             <h1>Mandelbrot/Julia Set Fractal Web Toy</h1>
         </div>
+        <div class="row">
+            <div class="column">
+                <p>Left click on canvas to zoom in, right click to zoom out</p>
 
-        <p>Left click on canvas to zoom in, right click to zoom out</p>
+                <canvas id="glcanvas" width="500" height="500" onmousedown="mousedown(event)" oncontextmenu="return false;" onmouseup="mouseup(event)"></canvas>
+                
+                <div>
+                    <input type="radio" id="radio-one" name="notaswitch-one" value="yes" checked/>
+                    <label for="radio-one">Mandelbrot</label>
+                    <input type="radio" id="radio-two" name="notaswitch-one" value="maybe" />
+                    <label for="radio-two">Julia</label>
+                </div>
 
-        <canvas id="glcanvas" width="500" height="500" onmousedown="mousedown(event)" oncontextmenu="return false;" onmouseup="mouseup(event)"></canvas>
-    	
-        <div>
-            <input type="radio" id="radio-one" name="notaswitch-one" value="yes" checked/>
-            <label for="radio-one">Mandelbrot</label>
-            <input type="radio" id="radio-two" name="notaswitch-one" value="maybe" />
-            <label for="radio-two">Julia</label>
-	    </div>
+                <div>
+                    <p>Real part:</p>
+                    <input class="slider" id="x-slider" type="range" step="1" min="-100" max="100" value="0">
+                    <p>Imaginary part:</p>
+                    <input class="slider" id="y-slider" type="range" step="1" min="-100" max="100" value="0">
+                </div>
+                <div>
+                    <p><input id="real" type="number" step="0.01" value="0.0"/>  + <input id="imaginary" type="number" step="0.01" value="0.0"/>i</p>
+                </div>
+                <div>   
+                    <p>Max iterations: <span id="max-it">500</span> (escape time algorithm, higher value may cause lag)</p>
+                        <input class="slider" id="max-iterations" type="range" step="1" min="50" max="1000" value="500">
+                </div>
+            </div>
+            <div class="column">
+                <h1>ABOUT</h1>
+                <p></p>
+                <p>The Mandelbrot set is the set of complex numbers \(c\) for which the iterative function \(f(x) = x^2 + c\) does not diverge, 
+                    for \(x\) starting at \(0\). Each pixel represents a point in the complex plane, and black pixels are in the set. 
+                    <p></p>
+                    The Julia set is the set of complex numbers \(x\) for which the iterative function \(f(x) = x^2 + c\) does not diverge when initialized with  \(x\), 
+                    given a complex number \(c\) (which you can set with the slider below). Each pixel represents a point in the complex plane, and black pixels are in the set. 
+                    <p></p>
+                    <p></p>
+                    This program uses shaders run on the GPU to parallize the algorithm used to compute the fractals. With this method the set renders very quickly, 
+                    and can be interacted with in real time, making for a fun web toy. 
 
-        <div>
-            <p>Real part:</p>
-            <input class="slider" id="x-slider" type="range" step="1" min="-100" max="100" value="0">
-            <p>Imaginary part:</p>
-            <input class="slider" id="y-slider" type="range" step="1" min="-100" max="100" value="0">
+                    <h3>The Algorithm:</h3>
+                    <p></p>
+                    <p>The algorithm used is the classic Escape Time Algorithm. The color of a pixel is determined by the number of iterations
+                        the complex number associated with that pixel takes to diverge to infinity. Clearly we cannot actually diverge the value to infinity, so we determine whether
+                        it will or not by checking if the iterated value increases to a certain value in a certain number of iterations. That number of iterations can be changed with the slider below. 
+                        A higher value will make for a more detailed fractal but is more computationally intensive.
+                    </p>
+                </p>
+            </div>
         </div>
-        <div>
-            <p><input id="real" type="number" step="0.01" value="0.0"/>  + <input id="imaginary" type="number" step="0.01" value="0.0"/>i</p>
-        </div>
-        <div>   
-            <p>Max iterations: <span id="max-it">500</span> (escape time algorithm, higher value may cause lag)</p>
-                <input class="slider" id="max-iterations" type="range" step="1" min="50" max="1000" value="500">
-        </div>
-    
+
+
 
     </body>
+
+
+
 
 
 <script id="shader-fs-mandel" type="x-shader/x-fragment">
@@ -185,7 +218,7 @@ gl_FragColor = escaped ? vec4(col, 1.0) : vec4(vec3(0.0, 0.0, 0.0), 1.0);
     </script>
     <script src="./dist/gl-matrix.js"></script>
     <script src="./webgl.js"></script>
-
+    
 
 
 </html>

@@ -88,7 +88,7 @@ function main() {
 
   programInfo = mandelbrotprogramInfo;
 
-  console.log(juliaprogramInfo.uniformLocations.resolution);
+  ////console.log(juliaprogramInfo.uniformLocations.resolution);
   gl.useProgram(mandelbrotProgram);
 
   gl.uniform2fv(programInfo.uniformLocations.resolution, [500.0, 500.0]);
@@ -125,10 +125,10 @@ function main() {
               glMatrix.vec2.set(temp, zoomvector[0], zoomvector[1]);
               glMatrix.vec2.scale(temp, temp, zoomscale);
               glMatrix.vec2.add(globalZoomCenter, globalZoomCenter,temp );
-              //console.log(mousePos[0], mousePos[1]);
-              //console.log(globalZoomCenter[0], globalZoomCenter[1]);
+              ////console.log(mousePos[0], mousePos[1]);
+              ////console.log(globalZoomCenter[0], globalZoomCenter[1]);
               gl.uniform2fv(programInfo.uniformLocations.zoomCenter, globalZoomCenter);
-              console.log(thresh);
+              //console.log(thresh);
               globalZoomSize = globalZoomSize - globalZoomSize*0.01;
               gl.uniform1f(programInfo.uniformLocations.zoomSize, globalZoomSize);
 
@@ -138,7 +138,7 @@ function main() {
             globalZoomSize = globalZoomSize - globalZoomSize*0.01;
             gl.uniform1f(programInfo.uniformLocations.zoomSize, globalZoomSize);
           }
-          console.log(globalZoomSize);
+          //console.log(globalZoomSize);
           //gl.uniform1i(programInfo.uniformLocations.maxIterations, 500);
 
       }
@@ -151,7 +151,7 @@ function main() {
       {
 
       }
-      console.log("sup");
+      //console.log("sup");
 
     //Enter C value.
     document.getElementById("x-slider").oninput = function() {
@@ -159,30 +159,30 @@ function main() {
       x_val /= 100;
       document.getElementById("real").value = x_val;
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
-      //console.log(x_val);
+      ////console.log(x_val);
     };
     document.getElementById("y-slider").oninput = function() {
       y_val = document.getElementById("y-slider").value;
       y_val /= 100;
       document.getElementById("imaginary").value = y_val;
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
-      //console.log(y_val);
+      ////console.log(y_val);
     };
     document.getElementById("max-iterations").oninput = function() {
       maxIterations = document.getElementById("max-iterations").value;
       document.getElementById("max-it").innerHTML = maxIterations;
       gl.uniform1i(programInfo.uniformLocations.maxIterations, [maxIterations]);
-      console.log(maxIterations);
+      //console.log(maxIterations);
     };
     document.getElementById("real").oninput = function() {
       x_val = document.getElementById("real").value;
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
-      console.log("hellox");
+      //console.log("hellox");
     };
     document.getElementById("imaginary").oninput = function() {
       y_val = document.getElementById("imaginary").value;
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
-      console.log("helloy");
+      //console.log("helloy");
     };
     
     document.getElementById("radio-one").oninput = function() {
@@ -333,15 +333,15 @@ function loadShader(gl, type, source) {
 
 function mousedown(event)
 {
-  console.log("hi");
+  //console.log("hi");
   if(event.which == 1)
   {
     var x = event.offsetX;
     var y = 500.0 - event.offsetY;
     glMatrix.vec2.set(mousePos, x, y); 
     zoomin = true;
-    //console.log("x coords: " + mousePos.x + ", y coords: " + mousePos.y);
-    //console.log("x coords: " + globalResolution.x + ", y coords: " + globalResolution.y);
+    ////console.log("x coords: " + mousePos.x + ", y coords: " + mousePos.y);
+    ////console.log("x coords: " + globalResolution.x + ", y coords: " + globalResolution.y);
 
     mousePosToComplexPlane(mousePos, globalResolution);
   }
@@ -364,7 +364,7 @@ function mousePosToComplexPlane(mousepos, resolution)
     two = glMatrix.vec2.create();
     glMatrix.vec2.set(two, 2.0, 2.0)
     glMatrix.vec2.divide(temp, mousepos, resolution);
-    //console.log("x coords: " + temp[0] + ", y coords: " + temp[1]);
+    ////console.log("x coords: " + temp[0] + ", y coords: " + temp[1]);
 
     glMatrix.vec2.scale(temp, temp, 4.0);
     glMatrix.vec2.subtract(temp, temp, two);
@@ -374,7 +374,7 @@ function mousePosToComplexPlane(mousepos, resolution)
 
     //create a direction vector from zoom center to mouse pos
     glMatrix.vec2.subtract(temp, temp, globalZoomCenter)
-    //console.log("x coords: " + temp[0] + ", y coords: " + temp[1]);
+    ////console.log("x coords: " + temp[0] + ", y coords: " + temp[1]);
     glMatrix.vec2.set(zoomvector, temp[0], temp[1]);
     thresh = glMatrix.vec2.distance(mousepos, globalZoomCenter)* 0.1;
 
