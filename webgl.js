@@ -158,6 +158,7 @@ function main() {
       x_val = document.getElementById("x-slider").value;
       x_val /= 100;
       document.getElementById("real").value = x_val;
+      document.getElementById("real-1").innerHTML = x_val.toString();
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
       ////console.log(x_val);
     };
@@ -165,6 +166,7 @@ function main() {
       y_val = document.getElementById("y-slider").value;
       y_val /= 100;
       document.getElementById("imaginary").value = y_val;
+      document.getElementById("imaginary-1").innerHTML = y_val.toString();
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
       ////console.log(y_val);
     };
@@ -176,11 +178,13 @@ function main() {
     };
     document.getElementById("real").oninput = function() {
       x_val = document.getElementById("real").value;
+      document.getElementById("real-1").innerHTML = x_val.toString();
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
       //console.log("hellox");
     };
     document.getElementById("imaginary").oninput = function() {
       y_val = document.getElementById("imaginary").value;
+      document.getElementById("imaginary-1").innerHTML = y_val.toString();
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]);
       //console.log("helloy");
     };
@@ -196,10 +200,13 @@ function main() {
       zoomconst = 0.5;
       x_val = 0.0;
       y_val = 0.0;
+      maxIterations = 75;
       gl.uniform2fv(programInfo.uniformLocations.resolution, [500.0, 500.0]);
       gl.uniform2fv(programInfo.uniformLocations.zoomCenter, [0.0, 0.0]);
       gl.uniform1fv(programInfo.uniformLocations.zoomSize, [2.0]);
       gl.uniform1iv(programInfo.uniformLocations.maxIterations, [75]);
+      document.getElementById("max-it").innerHTML = maxIterations;
+      document.getElementById("max-iterations").value = maxIterations;
       };
     document.getElementById("radio-two").oninput = function() {
       programInfo = juliaprogramInfo;
@@ -212,11 +219,22 @@ function main() {
       zoomconst = 0.5;
       x_val = 0.0;
       y_val = 0.0;
+      maxIterations = 75;
       gl.uniform2fv(programInfo.uniformLocations.resolution, [500.0, 500.0]);
       gl.uniform2fv(programInfo.uniformLocations.zoomCenter, [0.0, 0.0]);
       gl.uniform1fv(programInfo.uniformLocations.zoomSize, [2.0]);
       gl.uniform1iv(programInfo.uniformLocations.maxIterations, [75]);
       gl.uniform2fv(programInfo.uniformLocations.c, [x_val, y_val]); 
+      document.getElementById("x-slider").value = Math.round(x_val);
+      document.getElementById("y-slider").value = Math.round(y_val);
+      document.getElementById("real").value = Math.round(x_val);
+      document.getElementById("imaginary").value = Math.round(y_val);
+      document.getElementById("real-1").innerHTML = x_val.toString();
+      document.getElementById("imaginary-1").innerHTML = y_val.toString();
+      document.getElementById("max-it").innerHTML = maxIterations;
+      document.getElementById("max-iterations").value = maxIterations;
+
+
     };
     drawScene(gl, programInfo, buffers);
     requestAnimationFrame(render);

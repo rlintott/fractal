@@ -35,24 +35,27 @@
                     <input class="slider" id="y-slider" type="range" step="1" min="-100" max="100" value="0">
                 </div>
                 <div>
+                    <p>\(c =\) <span id="real-1">0</span>\( + \)<span id="imaginary-1">0</span>\(i\)</p>
+                    <p></p>
                     <p><input id="real" type="number" step="0.01" value="0.0"/>  + <input id="imaginary" type="number" step="0.01" value="0.0"/>i</p>
                 </div>
                 <div>   
-                    <p>Max iterations: <span id="max-it">500</span> (escape time algorithm, higher value may cause lag)</p>
-                        <input class="slider" id="max-iterations" type="range" step="1" min="50" max="1000" value="500">
+                    <p>Max iterations: <span id="max-it">75</span> (escape time algorithm, higher value may cause lag)</p>
+                        <input class="slider" id="max-iterations" type="range" step="1" min="50" max="1000" value="75">
                 </div>
             </div>
             <div class="column">
                 <h1>ABOUT</h1>
                 <p></p>
                 <p>The Mandelbrot set is the set of complex numbers \(c\) for which the iterative function \(f(x) = x^2 + c\) does not diverge, 
-                    for \(x\) starting at \(0\). Each pixel represents a point in the complex plane, and black pixels are in the set. 
+                    for \(x\) starting at \(0\). 
                     <p></p>
                     The Julia set is the set of complex numbers \(x\) for which the iterative function \(f(x) = x^2 + c\) does not diverge when initialized with  \(x\), 
-                    given a complex number \(c\) (which you can set with the slider below). Each pixel represents a point in the complex plane, and black pixels are in the set. 
+                    given a complex number \(c\) (which you can set with the slider below). 
                     <p></p>
+                    Each pixel represents a point in the complex plane, and black points are in the set. 
                     <p></p>
-                    This program uses shaders run on the GPU to parallize the algorithm used to compute the fractals. With this method the set renders very quickly, 
+                    This program uses shaders executed on the GPU to parallize the algorithm. With this method the set renders very quickly, 
                     and can be interacted with in real time, making for a fun web toy. 
 
                     <h3>The Algorithm:</h3>
