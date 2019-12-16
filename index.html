@@ -12,8 +12,17 @@
             <h1>Mandelbrot/Julia Set Fractal Web Toy</h1>
         </div>
 
+        <p>Left click on canvas to zoom in, right click to zoom out</p>
+
         <canvas id="glcanvas" width="500" height="500" onmousedown="mousedown(event)" oncontextmenu="return false;" onmouseup="mouseup(event)"></canvas>
-    
+    	
+        <div>
+            <input type="radio" id="radio-one" name="notaswitch-one" value="yes" checked/>
+            <label for="radio-one">Mandelbrot</label>
+            <input type="radio" id="radio-two" name="notaswitch-one" value="maybe" />
+            <label for="radio-two">Julia</label>
+	    </div>
+
         <div>
             <p>Real part:</p>
             <input class="slider" id="x-slider" type="range" step="1" min="-100" max="100" value="0">
@@ -22,10 +31,13 @@
         </div>
         <div>
             <p><input id="real" type="number" step="0.01" value="0.0"/>  + <input id="imaginary" type="number" step="0.01" value="0.0"/>i</p>
-        </div>   
+        </div>
+        <div>   
+            <p>Max iterations: <span id="max-it">500</span> (escape time algorithm, higher value may cause lag)</p>
+                <input class="slider" id="max-iterations" type="range" step="1" min="50" max="1000" value="500">
+        </div>
     
-    
-    
+
     </body>
 
 
@@ -52,30 +64,10 @@ uniform float u_zoomSize;
 uniform int u_maxIterations;
 
 //c1 is black, c2 is any colour, c3 is white
-vec3 colour_picker(float quotient, vec3 c1, vec3 c2, vec3 c3, vec3 c4, vec3 c5, vec3 c6)
-{
-    float thresh = 0.25;
-    if(quotient < thresh)
-    {
-        return mix(c1, c2, quotient/thresh);
-    }
-    else if (quotient < thresh*2.0)
-    {
-        return mix(c2, c3, (quotient - thresh)/thresh);
-    }
-    else if (quotient < thresh*3.0)
-    {
-        return mix(c3, c4, (quotient - 2.0*thresh)/thresh);
-    }
-    else if (quotient < thresh*4.0)
-    {
-        return mix(c4, c5, (quotient - 3.0*thresh)/thresh);
-    }
-    else
-    {
-        return c6;
-    }
+vec3 palette(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
+    return a + b*cos( 6.28318*(c*t+d) );
 }
+
 
 vec2 f(vec2 z, vec2 c) {
     return mat2(z,-z.y,z.x)*z + c;
@@ -103,7 +95,7 @@ for (int i = 0; i < 10000; i++) {
     break;
     }
 }
-vec3 col = colour_picker(float(iterations) / float(u_maxIterations), vec3(0.1,0.0, 0.1), vec3(0.05, 0.34, 0.93), vec3(0.07, 0.89, 0.12), vec3(0.81,0.89, 0.03 ), vec3(0.9, 0.0, 0.0), vec3(0.0, 0.0, 0.0));
+vec3 col = palette(float(iterations)/float(u_maxIterations), vec3(0.5, 0.5, 0.5), vec3(0.5, 0.5, 0.5), vec3(1.0, 1.0, 1.0),vec3(0.00, 0.33, 0.67));
 gl_FragColor = escaped ? vec4(col, 1.0) : vec4(vec3(0.0, 0.0, 0.0), 1.0);
 }
 
@@ -132,33 +124,11 @@ uniform float u_zoomSize;
 /* How many iterations to do before deciding that a point is in the set. */
 uniform int u_maxIterations;
 
+
+
 uniform vec2 u_c;
 
-//c1 is black, c2 is any colour, c3 is white
-vec3 colour_picker(float quotient, vec3 c1, vec3 c2, vec3 c3, vec3 c4, vec3 c5, vec3 c6)
-{
-    float thresh = 0.25;
-    if(quotient < thresh)
-    {
-        return mix(c1, c2, quotient/thresh);
-    }
-    else if (quotient < thresh*2.0)
-    {
-        return mix(c2, c3, (quotient - thresh)/thresh);
-    }
-    else if (quotient < thresh*3.0)
-    {
-        return mix(c3, c4, (quotient - 2.0*thresh)/thresh);
-    }
-    else if (quotient < thresh*4.0)
-    {
-        return mix(c4, c5, (quotient - 3.0*thresh)/thresh);
-    }
-    else
-    {
-        return c6;
-    }
-}
+
 
 vec3 palette(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
     return a + b*cos( 6.28318*(c*t+d) );
