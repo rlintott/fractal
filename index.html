@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title>WebGL Demo</title>
+        <title>Fractals</title>
         <meta charset="utf-8">
         <link rel="stylesheet" href="./webgl.css" type="text/css">
         <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
@@ -21,6 +21,29 @@
 
                 <canvas id="glcanvas" width="500" height="500" onmousedown="mousedown(event)" oncontextmenu="return false;" onmouseup="mouseup(event)"></canvas>
                 
+                <h1>ABOUT</h1>
+                <p></p>
+                <p>The Mandelbrot set is the set of complex numbers \(c\) for which the iterative function \(f(x) = x^2 + c\) does not diverge, 
+                    for \(x\) starting at \(0\). 
+                    <p></p>
+                    The Julia set is the set of complex numbers \(x\) for which the iterative function \(f(x) = x^2 + c\) does not diverge when initialized with  \(x\), 
+                    given a complex number \(c\) (which you can set with the slider below). 
+                    <p></p>
+                    Each pixel represents a point in the complex plane, and black points are in the set. 
+                    <p></p>
+                    This program uses shaders executed on the GPU to parallize the algorithm. With this method the set renders very quickly, 
+                    and can be interacted with in real time, making for a fun web toy. 
+            
+                    <h3>The Algorithm:</h3>
+                    <p></p>
+                    <p>The algorithm used is the classic Escape Time Algorithm. The color of a pixel is determined by the number of iterations
+                        the complex number associated with that pixel takes to diverge to infinity. Clearly we cannot actually diverge the value to infinity, so we determine whether
+                        it will or not by checking if the iterated value increases to a certain value in a certain number of iterations. That number of iterations can be changed with the slider below. 
+                        A higher value will make for a more detailed fractal but is more computationally intensive.
+                    </p>
+                </p>
+            </div>
+            <div class="column">
                 <div>
                     <input type="radio" id="radio-one" name="notaswitch-one" value="yes" checked/>
                     <label for="radio-one">Mandelbrot</label>
@@ -44,35 +67,11 @@
                         <input class="slider" id="max-iterations" type="range" step="1" min="50" max="1000" value="75">
                 </div>
             </div>
-            <div class="column">
-                <h1>ABOUT</h1>
-                <p></p>
-                <p>The Mandelbrot set is the set of complex numbers \(c\) for which the iterative function \(f(x) = x^2 + c\) does not diverge, 
-                    for \(x\) starting at \(0\). 
-                    <p></p>
-                    The Julia set is the set of complex numbers \(x\) for which the iterative function \(f(x) = x^2 + c\) does not diverge when initialized with  \(x\), 
-                    given a complex number \(c\) (which you can set with the slider below). 
-                    <p></p>
-                    Each pixel represents a point in the complex plane, and black points are in the set. 
-                    <p></p>
-                    This program uses shaders executed on the GPU to parallize the algorithm. With this method the set renders very quickly, 
-                    and can be interacted with in real time, making for a fun web toy. 
-
-                    <h3>The Algorithm:</h3>
-                    <p></p>
-                    <p>The algorithm used is the classic Escape Time Algorithm. The color of a pixel is determined by the number of iterations
-                        the complex number associated with that pixel takes to diverge to infinity. Clearly we cannot actually diverge the value to infinity, so we determine whether
-                        it will or not by checking if the iterated value increases to a certain value in a certain number of iterations. That number of iterations can be changed with the slider below. 
-                        A higher value will make for a more detailed fractal but is more computationally intensive.
-                    </p>
-                </p>
-            </div>
         </div>
 
 
 
     </body>
-
 
 
 
